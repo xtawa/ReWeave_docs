@@ -16,7 +16,7 @@ export const config: GitBookThemeConfig = {
         collapsible: true,
     },
     editLink: {
-        baseUrl: 'https://github.com/xtawa/ReWeave/edit/main/src/docs',
+        baseUrl: 'https://github.com/xtawa/ReWeave_docs',
         text: 'Edit this page on GitHub',
     },
 };

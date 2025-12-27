@@ -43,18 +43,18 @@ export interface ReweaveConfig {
 }
 
 export const reweaveConfig: ReweaveConfig = {
-    title: "ReWeave Blog",
-    description: "A high-performance static blog built with ReWeave.",
+    title: "ReWeave Docs",
+    description: "The docs for ReWeave",
     language: "zh",
-    siteUrl: "https://demo.reweave.xtyin.com",
-    themeName: "weave",
+    siteUrl: "https://docs.reweave.xtyin.com",
+    themeName: "gitbook",
     homePage: "hero",
     hero: heroConfig,
     pagination: {
         pageSize: 15,
     },
     comments: {
-        enabled: true,
+        enabled: false,
         type: 'waline',
         serverURL: 'https://waline.xtyin.com',
     },
