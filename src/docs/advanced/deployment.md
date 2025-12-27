@@ -6,36 +6,42 @@ order: 2
 
 # 部署指南
 
-ReWeave 生成的是纯静态文件，因此可以部署在任何支持静态网站托管的服务上。
+ReWeave 生成的是标准的静态 HTML/CSS/JS 文件，这意味着您可以将其部署在互联网上几乎任何位置。
 
-## 构建
+## 标准构建流程
 
-首先，确保你已经运行了构建命令：
+无论选择哪种托管方式，第一步都是生成构建产物。
 
 ```bash
+# 安装依赖
+npm install
+
+# 执行构建
 npm run build
 ```
 
-这将在项目根目录下生成 `dist` 文件夹。
+构建完成后，项目根目录下会出现一个 `dist` 文件夹。这就是您需要发布的全部内容。
 
-## 部署选项
+## 平台特定指南
 
-### 1. Vercel (推荐)
+### 1. Vercel (强烈推荐)
 
-Vercel 是部署 Next.js 和其他静态站点的绝佳平台，对 ReWeave 支持良好。
+Vercel 拥有全球 CDN 和极佳的开发者体验，是部署 ReWeave 的首选。
 
-1.  在 Vercel 控制台导入你的 GitHub 仓库。
-2.  配置构建设置：
+1.  登录 Vercel Dashboard。
+2.  点击 **"Add New..."** -> **"Project"**。
+3.  导入包含 ReWeave 项目的 Git 仓库。
+4.  Vercel 通常能自动识别项目配置。如果没有，请手动设置：
+    -   **Framework Preset**: Other
     -   **Build Command**: `npm run build`
     -   **Output Directory**: `dist`
-    -   **Install Command**: `npm install`
-3.  点击 Deploy。
+5.  点击 **Deploy**。
 
 ### 2. GitHub Pages
 
-你可以使用 GitHub Actions 自动部署。
+使用 GitHub Actions 可以实现自动化部署。
 
-创建一个 `.github/workflows/deploy.yml` 文件：
+在项目根目录创建 `.github/workflows/deploy.yml`：
 
 ```yaml
 name: Deploy to GitHub Pages
@@ -61,8 +67,38 @@ jobs:
           publish_dir: ./dist
 ```
 
-### 3. Nginx / Apache
+提交代码后，GitHub Actions 会自动运行并将 `dist` 目录推送到 `gh-pages` 分支。
 
-只需将 `dist` 目录下的所有文件上传到你的 Web 服务器根目录（例如 `/var/www/html`）即可。
+### 3. Nginx
 
-确保服务器配置了正确的 MIME 类型，并且处理好 404 错误页（指向 `404.html`）。
+如果您拥有自己的 Linux 服务器，可以使用 Nginx 托管。
+
+```nginx
+server {
+    listen 80;
+    server_name example.com;
+    
+    # 指向 dist 目录的绝对路径
+    root /var/www/my-reweave-site/dist;
+    index index.html;
+
+    location / {
+        # 尝试查找对应的 HTML 文件
+        try_files $uri $uri.html $uri/index.html /404.html;
+    }
+
+    # 缓存静态资源
+    location ~* \.(css|js|png|jpg|jpeg|gif|ico|svg)$ {
+        expires 30d;
+        add_header Cache-Control "public, no-transform";
+    }
+}
+```
+
+## 常见问题
+
+**Q: 部署后样式丢失？**
+A: 请检查 `reweave.config.ts` 中的 `siteUrl` 或 `baseUrl` 配置是否正确，以及 Nginx 配置中是否正确设置了 `root` 路径。
+
+**Q: 刷新页面出现 404？**
+A: 对于静态站点，服务器需要配置为当 URL 对应文件不存在时，尝试查找 `.html` 后缀的文件或目录下的 `index.html`。

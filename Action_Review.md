@@ -331,23 +331,46 @@
 - **Proposed Solution**:
 
 ### Documentation Overhaul
-- **Objective**: Create comprehensive documentation for the ReWeave framework in `src/docs`.
+- **Objective**: Create comprehensive documentation for the ReWeave framework in `src/docs`, covering all aspects from getting started to advanced development.
 - **Implementation**:
     - **Introduction**:
-        - Updated `src/docs/introduction/index.md` (Welcome & Intro).
-        - Updated `src/docs/introduction/quick-start.md` (Installation & Setup).
-        - Created `src/docs/introduction/features.md` (Key Features).
+        - Updated `src/docs/introduction/index.md`: Added project overview, core value proposition (performance, flexibility), and target audience scenarios.
+        - Updated `src/docs/introduction/quick-start.md`: Detailed installation steps (`npm install`), development commands (`npm run dev`), and production build workflow.
+        - Created `src/docs/introduction/features.md`: documented the 5 core strengths: High Performance Architecture (Worker Pool), Rich Content Support (GFM, LaTeX, Mermaid), Theme System, Developer Experience (TS, Tailwind), and Easter Eggs.
     - **Basics**:
-        - Created `src/docs/basics/project-structure.md` (Directory layout).
-        - Created `src/docs/basics/writing-content.md` (Markdown & Frontmatter guide).
-        - Created `src/docs/basics/configuration.md` (Global & Theme config).
+        - Created `src/docs/basics/project-structure.md`: Explained the purpose of key directories: `src/config` (settings), `src/content` (blogs), `src/docs` (documentation), `src/themes` (UI), and `src/core` (engine).
+        - Created `src/docs/basics/writing-content.md`: Provided a comprehensive guide on Frontmatter (metadata) and supported Markdown syntax including Code Blocks, LaTeX Math, Tables, and Images.
+        - Created `src/docs/basics/configuration.md`: Detailed the configuration hierarchy, explaining global settings in `reweave.config.ts` and theme-specific options in `src/config/*.config.ts`.
     - **Themes**:
-        - Created `src/docs/themes/overview.md` (Theme showcase & switching).
-        - Created `src/docs/themes/development.md` (Theme dev guide).
+        - Created `src/docs/themes/overview.md`: Showcased the four built-in themes (Weave, GitBook, Landing, Butterfly), explaining their specific use cases and features.
+        - Created `src/docs/themes/development.md`: Wrote a developer guide for creating custom themes, covering directory structure, core components (`Layout`, `Header`), and data injection props.
     - **Advanced**:
-        - Created `src/docs/advanced/architecture.md` (Build process & Worker pool).
-        - Created `src/docs/advanced/deployment.md` (Vercel/GitHub Pages deployment).
+        - Created `src/docs/advanced/architecture.md`: In-depth technical explanation of the build pipeline, the Supervisor Worker Pool pattern for parallel processing, and the caching system.
+        - Created `src/docs/advanced/deployment.md`: Step-by-step deployment guides for Vercel (recommended), GitHub Pages (via Actions), and traditional Nginx/Apache servers.
     - **Cleanup**:
-        - Removed obsolete `src/docs/advanced/configuration.md` and `src/docs/advanced/index.md` (if possible).
+        - Updated `src/docs/advanced/index.md` to serve as a proper index for the advanced section.
+
+
+## 2025-12-27 (Part 3)
+
+### Documentation Polish & Navigation Fix
+- **Objective**: Fix broken 404 links in documentation and improve content detail.
+- **Problem**: 
+    - Internal links pointed to `/docs/...` but generated files are at root level (e.g. `/introduction/...`).
+    - Section index pages (`/basics/`, `/themes/`) were missing, causing unclickable sidebar items.
+- **Implementation**:
+    - **Link Correction**: 
+        - Removed `/docs` prefix from all internal links across all markdown files.
+        - Verified links now point to correct generated paths (e.g., `/basics/configuration`).
+    - **Index Creation**:
+        - Created `src/docs/basics/index.md`: Added overview of basic concepts and reading order.
+        - Created `src/docs/themes/index.md`: Added guide to built-in themes and development.
+    - **Content Expansion**:
+        - **Introduction**: Added section on core design philosophy (Performance, Markdown-first).
+        - **Project Structure**: Added details on `.github` workflows and `public` assets behavior.
+        - **Writing Content**: Added examples for Mermaid charts, Block Math, and Frontmatter options.
+        - **Configuration**: Added detailed examples for `reweave.config.ts` keys (`toc`, `homePage`).
+        - **Themes**: Expanded descriptions of all 4 themes and added technical stack details for developers.
+        - **Advanced**: Elaborated on the Build Pipeline stages and Nginx configuration.
 - **Status**: ✅ Completed
 

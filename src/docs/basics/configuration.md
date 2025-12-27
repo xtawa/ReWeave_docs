@@ -6,81 +6,87 @@ order: 3
 
 # 配置指南
 
-ReWeave 的配置系统位于 `src/config` 目录下。
+ReWeave 提供了灵活的配置系统，允许您通过简单的 TypeScript 文件控制站点的各个方面。
 
-## 全局配置 (`src/config/reweave.config.ts`)
+## 全局配置
 
-这是项目的主配置文件，用于定义站点标题、描述、当前使用的主题等。
+全局配置文件位于 `src/config/reweave.config.ts`。
 
 ```typescript
-import type { ReWeaveConfig } from '../core/types'; // 假设的类型导入
-
 const config = {
   // 站点标题，显示在浏览器标签页和导航栏
   title: "ReWeave Docs",
   
-  // 站点描述，用于 SEO
+  // 站点描述，用于 SEO meta 标签
   description: "Documentation for ReWeave Framework",
   
-  // 当前激活的主题
-  // 可选值: 'weave' | 'gitbook' | 'landing' | 'butterfly'
-  themeName: 'gitbook',
+  // 站点基础 URL，用于生成 RSS 和 Sitemap
+  siteUrl: "https://reweave.vercel.app",
   
-  // 站点的基础 URL (如果部署在子路径下)
-  // baseUrl: '/docs/',
+  // 默认语言
+  language: "zh-CN",
+  
+  // 当前激活的主题
+  // 修改此项可立即切换全站风格
+  themeName: 'gitbook', // 可选: 'weave' | 'gitbook' | 'landing' | 'butterfly'
+  
+  // 目录生成 (Table of Contents) 配置
+  toc: {
+    enabled: true,      // 是否开启
+    maxDepth: 3,        // 最大深度 (h1-h3)
+    position: 'right',  // 位置: 'left' | 'right' | 'top'
+    collapsible: true   // 是否可折叠
+  },
+  
+  // 首页模式
+  // 'hero': 使用 Hero 组件 (适用于 Landing 主题)
+  // 'posts': 直接显示文章列表 (适用于 Weave/Butterfly 主题)
+  homePage: 'posts',
 };
-
-export default config;
 ```
 
-## 主题配置
+## 主题专属配置
 
-每个主题都有自己的独立配置文件，同样位于 `src/config` 目录下。
+每个主题都有其独立的配置文件，位于 `src/config` 目录下。
 
-### Weave 主题 (`src/config/weave.config.ts`)
-
-适用于博客的配置。
+### Weave 主题配置 (`weave.config.ts`)
 
 ```typescript
 export default {
-  // 导航菜单链接
+  // 导航栏链接
   navLinks: [
-    { name: "Home", href: "/" },
-    { name: "About", href: "/about" },
-    { name: "Projects", href: "/projects" },
+    { name: "首页", href: "/" },
+    { name: "归档", href: "/archive" },
+    { name: "关于", href: "/about" },
   ],
-  // 社交媒体链接
+  
+  // 社交链接图标
   social: {
-    github: "https://github.com/yourname",
-    twitter: "https://twitter.com/yourname",
+    github: "https://github.com/xtawa/ReWeave",
+    twitter: "https://twitter.com/xtawa",
   },
-  // 每页显示的文章数量
+  
+  // 分页设置
   postsPerPage: 10,
 };
 ```
 
-### GitBook 主题 (`src/config/gitbook.config.ts`)
-
-适用于文档的配置。
+### GitBook 主题配置 (`gitbook.config.ts`)
 
 ```typescript
 export default {
-  // 侧边栏标题
-  sidebarTitle: "文档目录",
+  // 侧边栏顶部标题
+  sidebarTitle: "ReWeave 文档",
   
-  // 顶部导航链接
-  navLinks: [
-    { name: "首页", href: "/" },
-    { name: "GitHub", href: "https://github.com/..." },
-  ],
-  
-  // 是否启用搜索 (如果有实现)
+  // 是否启用搜索功能
   enableSearch: false,
+  
+  // 仓库链接 (用于显示 "在 GitHub 上编辑此页")
+  repoUrl: "https://github.com/xtawa/ReWeave",
 };
 ```
 
-## 环境变量
+## 注意事项
 
-对于敏感信息或环境特定的配置，可以使用环境变量。虽然 ReWeave 是纯静态生成，但在构建时可以访问 Node.js 环境变量。
-
-你可以在构建命令前设置环境变量，或者使用 `.env` 文件（需配合 `dotenv` 等库，ReWeave 默认构建脚本目前主要读取配置文件）。
+- **类型安全**: 配置文件是 TypeScript 格式，这意味着编辑器会提供智能提示。如果输入了错误的配置项，构建时会报错，从而避免运行时错误。
+- **热更新**: 修改配置文件通常会触发热更新，但修改 `themeName` 等涉及重大的架构变更可能需要重启开发服务器 (`npm run dev`)。
