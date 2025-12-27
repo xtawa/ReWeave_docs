@@ -329,6 +329,25 @@
 - **Objective**: Resolve "Worker stopped with exit code 1" error during CSS build on Vercel.
 - **Problem**: Vercel environment likely running out of memory or crashing due to parallel execution of CSS build and heavy post processing.
 - **Proposed Solution**:
-    - Move CSS build to be sequential (awaited) before post processing.
-    - Add explicit error handling for CSS build.
-    - Add concurrency limit for post processing to avoid future OOM.
+
+### Documentation Overhaul
+- **Objective**: Create comprehensive documentation for the ReWeave framework in `src/docs`.
+- **Implementation**:
+    - **Introduction**:
+        - Updated `src/docs/introduction/index.md` (Welcome & Intro).
+        - Updated `src/docs/introduction/quick-start.md` (Installation & Setup).
+        - Created `src/docs/introduction/features.md` (Key Features).
+    - **Basics**:
+        - Created `src/docs/basics/project-structure.md` (Directory layout).
+        - Created `src/docs/basics/writing-content.md` (Markdown & Frontmatter guide).
+        - Created `src/docs/basics/configuration.md` (Global & Theme config).
+    - **Themes**:
+        - Created `src/docs/themes/overview.md` (Theme showcase & switching).
+        - Created `src/docs/themes/development.md` (Theme dev guide).
+    - **Advanced**:
+        - Created `src/docs/advanced/architecture.md` (Build process & Worker pool).
+        - Created `src/docs/advanced/deployment.md` (Vercel/GitHub Pages deployment).
+    - **Cleanup**:
+        - Removed obsolete `src/docs/advanced/configuration.md` and `src/docs/advanced/index.md` (if possible).
+- **Status**: ✅ Completed
+
